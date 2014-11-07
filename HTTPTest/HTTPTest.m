@@ -45,7 +45,7 @@
     [super dealloc];
 }
 
-- (void)works {
+- (void)go {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.haystacksoftware.com/support/sendlog.php"]];
     [request setValue:[NSString stringWithFormat:@"multipart/form-data, boundary=%@", uuid] forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"%ld", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
@@ -66,32 +66,8 @@
     [inputStream release];
     [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:RUN_LOOP_MODE];
     [connection release];
-    NSLog(@"works");
+    NSLog(@"done");
 }
-- (void)doesntWork {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://www.haystacksoftware.com/support/sendlog.php"]];
-    [request setValue:[NSString stringWithFormat:@"multipart/form-data, boundary=%@", uuid] forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%ld", (unsigned long)[body length]] forHTTPHeaderField:@"Content-Length"];
-    
-    NSInputStream *inputStream = (NSInputStream *)[[HTTPInputStream alloc] initWithData:body];
-    [request setHTTPMethod:@"PUT"];
-    [request setHTTPBodyStream:inputStream];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
-    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:RUN_LOOP_MODE];
-    [connection start];
-    
-    while (!done) {
-        [[NSRunLoop currentRunLoop] runMode:RUN_LOOP_MODE beforeDate:[NSDate distantFuture]];
-    }
-    [request release];
-    [inputStream release];
-    [connection unscheduleFromRunLoop:[NSRunLoop currentRunLoop] forMode:RUN_LOOP_MODE];
-    [connection release];
-    [[NSRunLoop currentRunLoop] runMode:RUN_LOOP_MODE beforeDate:[NSDate distantFuture]];
-    NSLog(@"doesn't work");
-}
-
 
 #pragma mark NSURLConnectionDelegate
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {

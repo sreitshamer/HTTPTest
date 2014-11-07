@@ -13,8 +13,11 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         HTTPTest *test = [[[HTTPTest alloc] init] autorelease];
-        [test works];
-        [test doesntWork];
+        
+        NSLog(@"the first run destroys the HTTPInputStream; subsequent runs do not");
+        
+        [test go];
+        [test go];
     }
     return 0;
 }

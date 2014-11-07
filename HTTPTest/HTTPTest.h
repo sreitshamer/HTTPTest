@@ -13,6 +13,5 @@
     NSString *uuid;
     BOOL done;
 }
-- (void)works;
-- (void)doesntWork;
+- (void)go;
 @end
